@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#102a43" />
+  <title>Một ngày thật đặc biệt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section class="welcome-screen" id="welcomeScreen" aria-labelledby="welcomeTitle">
+    <div class="welcome-note">
+      <span class="welcome-envelope" aria-hidden="true">✉</span>
+      <p class="eyebrow coral">Một lời nhắn dành riêng cho bạn</p>
+      <h1 id="welcomeTitle"><span>Dương Văn Việt</span><br />có một món quà nhỏ<br />dành cho bạn.</h1>
+      <p class="welcome-description">Hãy ấn tiếp tục để sẵn sàng nhận nó.<br />Một chút bất ngờ đang chờ bạn phía trước ♡</p>
+      <button class="btn btn-sunshine" id="continueBtn" type="button">Tiếp tục <span aria-hidden="true">→</span></button>
+      <p class="welcome-footnote">Gửi bạn, với một chút chân thành.</p>
+    </div>
+  </section>
+  <div class="falling-petals" id="fallingPetals" aria-hidden="true"></div>
+  <main class="page-shell" id="birthdayPage" hidden>
+    <section class="hero-section" aria-labelledby="hero-title">
+      <nav class="topbar container">
+        <a class="brand-mark" href="#top" aria-label="Về đầu trang"><span>✦</span> little note</a>
+        <span class="date-stamp">05 · 10 · 2026</span>
+      </nav>
+
+      <div class="hero-content container" id="top">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">A tiny birthday postcard</p>
+          <h1 id="hero-title">Chúc mừng sinh nhật,<br /><span>Vũ Thị Giang</span></h1>
+          <p class="hero-lead">Một lời chúc nhỏ cho một người bạn thật dễ mến. Mong tuổi mới của bạn có thật nhiều ngày vui, những điều bất ngờ xinh xắn và đủ thời gian cho những điều bạn thích.</p>
+          <button class="btn btn-sunshine" id="openCardBtn" type="button">
+            Mở tấm thiệp <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div class="hero-art reveal reveal-delay-1" aria-label="Bánh sinh nhật minh họa">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="cake-wrap">
+            <span class="cake-spark spark-a">✦</span>
+            <span class="cake-spark spark-b">·</span>
+            <button class="candle" id="candleBtn" type="button" aria-label="Thổi nến để ước" aria-describedby="candleStatus"><span aria-hidden="true"></span></button>
+            <div class="cake-top"></div>
+            <div class="cake-body"><i></i><i></i><i></i></div>
+            <div class="cake-plate"></div>
+          </div>
+          <span class="art-note note-left">make a wish</span>
+          <span class="art-note note-right">for you</span>
+          <p class="candle-status" id="candleStatus" role="status" aria-live="polite">Chạm vào ngọn nến để ước ✦</p>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span> kéo xuống một chút</div>
+    </section>
+
+    <section class="letter-section" id="letter" aria-labelledby="letter-title">
+      <div class="container narrow-container">
+        <div class="section-heading reveal">
+          <p class="eyebrow coral">The little letter</p>
+          <h2 id="letter-title">Gửi bạn một điều<br /><em>thật vui</em></h2>
+        </div>
+        <form id="letterUnlockForm" class="letter-lock">
+          <span class="lock-decoration" aria-hidden="true">✉</span>
+          <h3>Xem lời chúc</h3>
+          <p>Một lời chúc dành riêng cho bạn. Nhập tên và ngày sinh để mở nhé.</p>
+          <label for="letterName">Tên của bạn</label>
+          <input id="letterName" name="recipient" autocomplete="name" maxlength="80" required placeholder="Nhập tên của bạn" />
+          <label for="letterPasscode">Mật mã sinh nhật</label>
+          <input id="letterPasscode" name="passcode" type="password" inputmode="numeric" pattern="[0-9]{4}" minlength="4" maxlength="4" required aria-describedby="letterCodeHint" placeholder="4 chữ số" />
+          <p id="letterCodeHint" class="wish-hint">Nhập ngày và tháng sinh gồm 4 chữ số, không có dấu /.</p>
+          <button class="btn btn-sunshine" type="submit" aria-controls="birthdayLetter">Xem lời chúc <span aria-hidden="true">→</span></button>
+          <p id="letterUnlockStatus" role="status" aria-live="polite"></p>
+        </form>
+        <div class="letter-card" id="birthdayLetter" hidden tabindex="-1" aria-label="Lời chúc sinh nhật">
+          <div class="letter-meta"><span>Gửi: Vũ Thị Giang</span><span>Ngày: hôm nay</span></div>
+          <div class="letter-copy" id="letterCopy">
+            <p>Hey bạn,</p>
+            <p>Chúc bạn tuổi mới luôn giữ được sự đáng yêu, năng lượng tích cực và nụ cười rất riêng của mình. Mong mọi dự định bạn đang ấp ủ đều dần thành hình, còn những ngày mệt thì sẽ nhanh chóng được bù lại bằng những niềm vui bất ngờ.</p>
+            <p>Cảm ơn vì đã là một người bạn dễ thương nhé. Hôm nay cứ tận hưởng thật trọn vẹn đi!</p>
+            <p class="signature">— một người bạn gửi lời chúc</p>
+          </div>
+          <button class="letter-sticker" id="wishBtn" type="button" title="Nhận thêm một lời chúc">tap for a tiny wish <span>✦</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="memory-section" aria-labelledby="memory-title">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <p class="eyebrow gold">A few good things</p>
+          <h2 id="memory-title">Tuổi mới, <em>thật nhiều điều hay</em></h2>
+        </div>
+        <div class="row g-4 memory-grid">
+          <div class="col-md-4 reveal">
+            <article class="memory-card card-yellow">
+              <span class="card-number">01</span>
+              <span class="memory-icon">☼</span>
+              <h3>Ngày vui</h3>
+              <p>Luôn có những buổi chiều nắng đẹp và những cuộc hẹn làm bạn cười thật lâu.</p>
+              <span class="card-caption">sunny days ahead</span>
+            </article>
+          </div>
+          <div class="col-md-4 reveal reveal-delay-1">
+            <article class="memory-card card-blue">
+              <span class="card-number">02</span>
+              <span class="memory-icon">⌁</span>
+              <h3>Điều mới</h3>
+              <p>Đủ can đảm để thử điều mới, đủ kiên nhẫn để đi đến nơi bạn muốn.</p>
+              <span class="card-caption">keep growing</span>
+            </article>
+          </div>
+          <div class="col-md-4 reveal reveal-delay-2">
+            <article class="memory-card card-coral">
+              <span class="card-number">03</span>
+              <span class="memory-icon">♡</span>
+              <h3>Thật vui</h3>
+              <p>Và quan trọng nhất: luôn có người thương quý, ủng hộ bạn ở bên cạnh.</p>
+              <span class="card-caption">you deserve good things</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="photo-section" id="photos" aria-labelledby="photo-title">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <p class="eyebrow gold">Our little timeline</p>
+          <h2 id="photo-title">Từng cột mốc, <em>từng kỷ niệm</em></h2>
+          <p class="photo-intro">Đi qua từng khung hình, giữ lại những khoảnh khắc đáng nhớ.</p>
+        </div>
+        <!-- Thay nhãn Mốc 01–04 bằng ngày tháng và lời kể của từng ảnh. -->
+        <ol class="photo-timeline">
+          <li class="timeline-item reveal">
+          <figure class="photo-card">
+            <img src="assets/Pictures/1.jpg" alt="Ảnh kỷ niệm sinh nhật 1" loading="lazy" decoding="async" />
+            <figcaption><span class="milestone-date">Mốc 01</span><h3>Một chút đáng yêu</h3><p>Một khung hình để bắt đầu câu chuyện.</p></figcaption>
+          </figure>
+          <div class="timeline-note">
+            <span class="note-index" aria-hidden="true">01</span>
+            <p class="note-kicker">Gói lại một khoảnh khắc</p>
+            <h3>Những điều nhỏ,<br /><em>thương thật lâu.</em></h3>
+            <p>Có những tấm ảnh chẳng cần kể quá nhiều. Chỉ cần nhìn lại, một chút niềm vui của ngày ấy cũng đủ trở về.</p>
+            <span class="note-signoff">Giữ lại một chút đáng yêu <span aria-hidden="true">♡</span></span>
+          </div>
+          </li>
+          <li class="timeline-item reveal">
+          <figure class="photo-card">
+            <img src="assets/Pictures/2.jpg" alt="Ảnh kỷ niệm sinh nhật 2" loading="lazy" decoding="async" />
+            <figcaption><span class="milestone-date">Mốc 02</span><h3>Một chút rực rỡ</h3><p>Thêm một khoảnh khắc muốn giữ lại thật lâu.</p></figcaption>
+          </figure>
+          <div class="timeline-note">
+            <span class="note-index" aria-hidden="true">02</span>
+            <p class="note-kicker">Một chút nắng dành cho bạn</p>
+            <h3>Cứ cười nhé,<br /><em>theo cách của bạn.</em></h3>
+            <p>Mong bạn luôn tìm thấy điều khiến mình háo hức: một nơi muốn đến, một điều muốn thử, hay đơn giản là một ngày thật vui.</p>
+            <span class="note-signoff">Thêm chút rực rỡ cho tuổi mới <span aria-hidden="true">☼</span></span>
+          </div>
+          </li>
+          <li class="timeline-item reveal">
+          <figure class="photo-card">
+            <img src="assets/Pictures/3.jpg" alt="Ảnh kỷ niệm sinh nhật 3" loading="lazy" decoding="async" />
+            <figcaption><span class="milestone-date">Mốc 03</span><h3>Một chút bình yên</h3><p>Dừng lại một chút, ngắm nhìn một kỷ niệm đẹp.</p></figcaption>
+          </figure>
+          <div class="timeline-note">
+            <span class="note-index" aria-hidden="true">03</span>
+            <p class="note-kicker">Một khoảng thảnh thơi</p>
+            <h3>Chậm lại một chút,<br /><em>vui thêm một chút.</em></h3>
+            <p>Giữa những ngày bận rộn, mong bạn vẫn có thời gian cho một bài nhạc yêu thích, một buổi chiều thong thả và những người làm bạn thấy dễ chịu.</p>
+            <span class="note-signoff">Bình yên cũng là một món quà <span aria-hidden="true">✦</span></span>
+          </div>
+          </li>
+          <li class="timeline-item reveal">
+          <figure class="photo-card">
+            <img src="assets/Pictures/4.jpg" alt="Ảnh kỷ niệm sinh nhật 4" loading="lazy" decoding="async" />
+            <figcaption><span class="milestone-date">Mốc 04</span><h3>Thật nhiều niềm vui</h3><p>Và còn nhiều khoảnh khắc đẹp đang chờ phía trước.</p></figcaption>
+          </figure>
+          <div class="timeline-note">
+            <span class="note-index" aria-hidden="true">04</span>
+            <p class="note-kicker">Câu chuyện còn viết tiếp</p>
+            <h3>Tuổi mới đến rồi,<br /><em>mình ước gì đây?</em></h3>
+            <p>Chúc những dự định nhỏ dần thành hiện thực, những chuyến đi có thêm bạn đồng hành, và album này sẽ còn đầy lên bằng thật nhiều kỷ niệm đẹp.</p>
+            <span class="note-signoff">Hẹn những ngày vui phía trước <span aria-hidden="true">♡</span></span>
+          </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="gift-section" aria-labelledby="gift-title">
+      <div class="container narrow-container">
+        <div class="section-heading centered reveal">
+          <p class="eyebrow coral">A surprise just for you</p>
+          <h2 id="gift-title">Vé cào <em>sinh nhật</em></h2>
+          <p>Có một bất ngờ nhỏ đang đợi Giang bên trong.</p>
+        </div>
+        <div class="gift-scene" id="giftScene">
+          <p class="gift-hint" id="giftHint">Dùng tay hoặc chuột cào lớp nhũ để nhận quà ♡</p>
+          <div class="scratch-ticket" id="giftBtn">
+          <div class="gift-result" id="giftResult" aria-hidden="true">
+            <p class="eyebrow coral">Món quà của bạn</p>
+            <h3 id="giftResultTitle" tabindex="-1"></h3>
+            <p id="giftResultMessage"></p>
+            <p class="gift-signature">Dành riêng cho Vũ Thị Giang ♡</p>
+          </div>
+          <canvas id="scratchCanvas" width="600" height="420" aria-hidden="true"></canvas>
+          </div>
+          <p id="scratchStatus" role="status" aria-live="polite">Món quà đang chờ bạn khám phá.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="appointment-section" id="appointment" aria-labelledby="appointment-title">
+      <div class="container narrow-container">
+        <div class="appointment-card reveal">
+          <p class="eyebrow coral">A little birthday appointment</p>
+          <h2 id="appointment-title">Hẹn bạn <em>một ngày vui</em></h2>
+          <p>Một chiếc bánh nhỏ, một cuộc trò chuyện dài và thêm vài kỷ niệm mới. Mình cùng dành một buổi để mừng tuổi mới nhé!</p>
+          <dl class="appointment-details">
+            <div><dt>Thời gian</dt><dd>Cùng chọn sau</dd></div>
+            <div><dt>Địa điểm</dt><dd>Một nơi bạn thích</dd></div>
+          </dl>
+          <p class="appointment-note">Khi nào rảnh, nhắn mình để cùng chốt lịch nhé ♡</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wishes-section" id="wishes" aria-labelledby="wishes-title">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <p class="eyebrow gold">Make a little wish</p>
+          <h2 id="wishes-title">Gửi một <em>điều ước</em></h2>
+          <p>Viết điều bạn mong ước và gửi lên bảng tin nhé.</p>
+        </div>
+        <form id="wishForm" class="wish-form">
+          <label for="senderName">Họ tên người gửi</label>
+          <input id="senderName" name="name" autocomplete="name" maxlength="80" required placeholder="Tên của bạn" />
+          <label for="wishContent">Điều ước của bạn</label>
+          <textarea id="wishContent" name="message" rows="4" maxlength="500" required placeholder="Mình ước rằng…" aria-describedby="wishPrivacy"></textarea>
+          <p id="wishPrivacy" class="wish-hint">Điều ước chỉ hiện trên trang của bạn và sẽ biến mất khi tải lại hoặc rời trang.</p>
+          <button class="btn btn-sunshine" id="sendWishBtn" type="submit">Gửi điều ước <span aria-hidden="true">✦</span></button>
+          <p id="wishStatus" class="wish-status" role="status" aria-live="polite"></p>
+        </form>
+        <div class="wish-board-heading"><h3>Bảng tin điều ước</h3><button id="pauseWishesBtn" type="button" aria-pressed="false">Tạm dừng chuyển động</button></div>
+        <div class="wish-board" id="wishBoard"><p id="wishEmpty">Chưa có điều ước nào. Hãy gửi điều ước đầu tiên nhé!</p><ul class="wish-track" id="wishTrack" aria-label="Những điều ước đã gửi"></ul></div>
+      </div>
+    </section>
+
+    <section class="closing-section" aria-labelledby="closing-title">
+      <div class="confetti-field" aria-hidden="true"></div>
+      <div class="container closing-content reveal">
+        <p class="eyebrow coral">One more thing</p>
+        <h2 id="closing-title">Have the best<br /><span>birthday ever.</span></h2>
+        <p>Tuổi mới thật rực rỡ nhé, Vũ Thị Giang.</p>
+        <button class="btn btn-outline-light" id="celebrateBtn" type="button">Bấm để ăn mừng <span>✦</span></button>
+        <div class="footer-note">made with a little sunshine · 2026</div>
+      </div>
+    </section>
+  </main>
+
+  <audio id="birthdayMusic" loop preload="none">
+    <source src="assets/Music/Radiohead - No Surprises - Instrumental - SHADOWINLIGHT (youtube).mp3" type="audio/mpeg" />
+  </audio>
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="Bật nhạc nền" aria-pressed="false" hidden>
+    <span aria-hidden="true">♫</span> <span id="musicLabel">Bật nhạc</span>
+  </button>
+  <div class="toast-message" id="toastMessage" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+  <script src="wishes.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "name": "birthday-postcard",
+  "private": true,
+  "scripts": { "start": "node server.cjs" }
+}
