@@ -1,44 +1,83 @@
 const revealItems = document.querySelectorAll('.reveal');
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+function animationEnabled() {
+  return !motionPreference.matches && document.documentElement.dataset.effects !== 'off';
+}
+function scrollToSection(target, options = {}) {
+  target.scrollIntoView({ behavior: animationEnabled() ? 'smooth' : 'instant', ...options });
+}
 let journeyStarted = false;
 document.querySelector('#continueBtn').addEventListener('click', () => {
+  if (journeyStarted) return;
   journeyStarted = true;
-  document.querySelector('#welcomeScreen').hidden = true;
-  document.querySelector('#birthdayPage').hidden = false;
-  musicToggle.hidden = false;
-  window.scrollTo({ top: 0, behavior: 'instant' });
-  const heroTitle = document.querySelector('#hero-title');
-  heroTitle.setAttribute('tabindex', '-1');
-  heroTitle.focus({ preventScroll: true });
+  const welcomeScreen = document.querySelector('#welcomeScreen');
+  const continueButton = document.querySelector('#continueBtn');
+  continueButton.disabled = true;
+  continueButton.setAttribute('aria-busy', 'true');
   startMusic();
-  window.dispatchEvent(new Event('resize'));
+  function openBirthdayPage() {
+    welcomeScreen.hidden = true;
+    welcomeScreen.classList.remove('is-opening');
+    continueButton.removeAttribute('aria-busy');
+    document.querySelector('#birthdayPage').hidden = false;
+    document.querySelector('#birthdayPage').classList.add('journey-entered');
+    musicToggle.hidden = false;
+    document.querySelector('#musicPlayer').hidden = false;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const heroTitle = document.querySelector('#hero-title');
+    heroTitle.setAttribute('tabindex', '-1');
+    heroTitle.focus({ preventScroll: true });
+    window.dispatchEvent(new Event('resize'));
+  }
+  if (animationEnabled()) {
+    welcomeScreen.classList.add('is-opening');
+    window.setTimeout(openBirthdayPage, 760);
+  } else {
+    openBirthdayPage();
+  }
 });
 const petalLayer = document.querySelector('#fallingPetals');
-const petalColors = ['#f4a497', '#ec6b5d', '#f7c948', '#8fc4c2', '#fff4d5'];
-const petalFragment = document.createDocumentFragment();
-for (let index = 0; index < 72; index += 1) {
-  const petal = document.createElement('i');
-  petal.className = 'paper-petal';
-  petal.style.setProperty('--petal-left', `${Math.random() * 100}%`);
-  petal.style.setProperty('--petal-duration', `${10 + Math.random() * 14}s`);
-  petal.style.setProperty('--petal-delay', `${-Math.random() * 24}s`);
-  petal.style.setProperty('--petal-size', `${7 + Math.random() * 14}px`);
-  petal.style.setProperty('--petal-drift', `${Math.random() * 220 - 110}px`);
-  petal.style.setProperty('--petal-sway', `${8 + Math.random() * 20}px`);
-  petal.style.setProperty('--petal-opacity', `${.4 + Math.random() * .4}`);
-  petal.style.setProperty('--petal-flutter', `${2 + Math.random() * 3}s`);
-  petal.style.setProperty('--petal-color', petalColors[index % petalColors.length]);
-  petal.append(document.createElement('span'));
-  petalFragment.append(petal);
+const petalColors = ['#ed91a4', '#cf6b72', '#e4b969', '#aab784', '#f3b7c5', '#dda295'];
+function updatePetals() {
+  petalLayer.replaceChildren();
+  if (!animationEnabled()) {
+    if (typeof confetti === 'function') confetti.reset();
+    document.querySelectorAll('.gift-burst').forEach((burst) => burst.remove());
+    return;
+  }
+  const petalFragment = document.createDocumentFragment();
+  const petalCount = window.innerWidth < 768 ? 30 : 64;
+  for (let index = 0; index < petalCount; index += 1) {
+    const petal = document.createElement('i');
+    petal.className = `paper-petal petal-depth-${index % 3}${index % 9 === 0 ? ' is-heart' : ''}`;
+    petal.style.setProperty('--petal-left', `${Math.random() * 100}%`);
+    petal.style.setProperty('--petal-duration', `${12 + Math.random() * 18}s`);
+    petal.style.setProperty('--petal-delay', `${-Math.random() * 30}s`);
+    petal.style.setProperty('--petal-size', `${8 + (index % 3) * 4 + Math.random() * 8}px`);
+    petal.style.setProperty('--petal-drift', `${Math.random() * 360 - 180}px`);
+    petal.style.setProperty('--petal-sway', `${15 + Math.random() * 35}px`);
+    petal.style.setProperty('--petal-opacity', `${.35 + Math.random() * .4}`);
+    petal.style.setProperty('--petal-flutter', `${2 + Math.random() * 3}s`);
+    petal.style.setProperty('--petal-color', petalColors[index % petalColors.length]);
+    petal.append(document.createElement('span'));
+    petalFragment.append(petal);
+  }
+  petalLayer.append(petalFragment);
 }
-petalLayer.append(petalFragment);
+updatePetals();
+motionPreference.addEventListener('change', updatePetals);
+document.addEventListener('birthday:effectschange', updatePetals);
+window.matchMedia('(max-width: 767px)').addEventListener('change', updatePetals);
 const toastMessage = document.querySelector('#toastMessage');
 const openCardButton = document.querySelector('#openCardBtn');
 const wishButton = document.querySelector('#wishBtn');
 const celebrateButton = document.querySelector('#celebrateBtn');
 const candleButton = document.querySelector('#candleBtn');
 const candleStatus = document.querySelector('#candleStatus');
+candleButton.setAttribute('aria-pressed', 'false');
 candleButton.addEventListener('click', () => {
   const blown = candleButton.classList.toggle('is-blown');
+  candleButton.setAttribute('aria-pressed', String(blown));
   candleButton.setAttribute('aria-label', blown ? 'Thắp lại ngọn nến' : 'Thổi nến để ước');
   candleStatus.textContent = blown
     ? 'Điều ước của bạn sẽ thành hiện thực ✦ Chạm để thắp lại nến.'
@@ -47,7 +86,6 @@ candleButton.addEventListener('click', () => {
 });
 
 const giftButton = document.querySelector('#giftBtn');
-const giftScene = document.querySelector('#giftScene');
 const giftResult = document.querySelector('#giftResult');
 const giftTitle = document.querySelector('#giftResultTitle');
 const giftMessage = document.querySelector('#giftResultMessage');
@@ -58,7 +96,7 @@ const giftSurprises = [
 ];
 let giftIndex = -1;
 function burstGiftPaper() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!animationEnabled() || typeof Element.prototype.animate !== 'function') return;
   document.querySelectorAll('.gift-burst').forEach((burst) => burst.remove());
   const bounds = giftButton.getBoundingClientRect();
   const burst = document.createElement('div');
@@ -96,6 +134,7 @@ function chooseTicketPrize() {
 const scratchCanvas = document.querySelector('#scratchCanvas');
 const scratchContext = scratchCanvas.getContext('2d', { willReadFrequently: true });
 const scratchStatus = document.querySelector('#scratchStatus');
+const revealGiftButton = document.querySelector('#revealGiftBtn');
 let ticketRevealed = false;
 let scratchPointer = null;
 let lastScratchPoint = null;
@@ -108,6 +147,7 @@ function prepareTicket() {
   scratchMoves = 0;
   giftResult.setAttribute('aria-hidden', 'true');
   scratchCanvas.hidden = false;
+  if (revealGiftButton) revealGiftButton.hidden = false;
   scratchStatus.textContent = 'Đã cào 0% — cào đủ 80% để nhận quà nhé!';
   if (!scratchContext) return;
   scratchContext.globalCompositeOperation = 'source-over';
@@ -128,15 +168,20 @@ function prepareTicket() {
   scratchContext.font = '22px sans-serif';
   scratchContext.fillText('Một bất ngờ dành cho Giang ♡', 300, 244);
 }
-function revealTicket() {
+function revealTicket(fromButton = false) {
   if (ticketRevealed) return;
   ticketRevealed = true;
   scratchPointer = null;
   scratchCanvas.hidden = true;
   giftResult.removeAttribute('aria-hidden');
-  scratchStatus.textContent = `Chúc mừng! Bạn đã cào đủ 80% và nhận được: ${giftTitle.textContent}`;
+  if (revealGiftButton) revealGiftButton.hidden = true;
+  scratchStatus.textContent = `Chúc mừng! Món quà dành cho bạn: ${giftTitle.textContent}`;
+  if (fromButton) giftTitle.focus({ preventScroll: true });
   burstGiftPaper();
+  giftResult.classList.add('gift-unwrapped');
+  if (!fromButton) document.dispatchEvent(new CustomEvent('birthday:celebrate'));
 }
+revealGiftButton?.addEventListener('click', () => revealTicket(true));
 function scratchAt(event) {
   if (!scratchContext || ticketRevealed) return;
   const rect = scratchCanvas.getBoundingClientRect();
@@ -188,6 +233,17 @@ const letterRecipient = { name: 'Vũ Thị Giang', passcode: '0510' };
 const letterUnlockForm = document.querySelector('#letterUnlockForm');
 const birthdayLetter = document.querySelector('#birthdayLetter');
 const letterUnlockStatus = document.querySelector('#letterUnlockStatus');
+const letterInputs = [letterUnlockForm.elements.recipient, letterUnlockForm.elements.passcode];
+function clearLetterError() {
+  letterUnlockStatus.textContent = '';
+  letterInputs.forEach((input) => input.removeAttribute('aria-invalid'));
+}
+letterInputs.forEach((input) => {
+  const descriptionIds = new Set((input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
+  descriptionIds.add('letterUnlockStatus');
+  input.setAttribute('aria-describedby', [...descriptionIds].join(' '));
+  input.addEventListener('input', clearLetterError);
+});
 function normalizeRecipientName(value) {
   return value.normalize('NFC').trim().replace(/\s+/g, ' ').toLocaleLowerCase('vi');
 }
@@ -196,52 +252,61 @@ letterUnlockForm.addEventListener('submit', (event) => {
   const name = letterUnlockForm.elements.recipient.value;
   const passcode = letterUnlockForm.elements.passcode.value;
   if (normalizeRecipientName(name) !== normalizeRecipientName(letterRecipient.name) || passcode !== letterRecipient.passcode) {
+    letterInputs.forEach((input) => input.setAttribute('aria-invalid', 'true'));
     letterUnlockStatus.textContent = 'Tên hoặc mật mã chưa đúng. Bạn kiểm tra lại nhé!';
+    letterInputs[0].focus({ preventScroll: true });
     return;
   }
-  letterUnlockStatus.textContent = '';
+  clearLetterError();
   letterUnlockForm.reset();
   letterUnlockForm.hidden = true;
   birthdayLetter.hidden = false;
   birthdayLetter.focus({ preventScroll: true });
-  birthdayLetter.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  scrollToSection(birthdayLetter, { block: 'center' });
   launchConfetti();
+  document.dispatchEvent(new CustomEvent('birthday:celebrate'));
 });
 window.addEventListener('pageshow', (event) => {
   if (!event.persisted) return;
   birthdayLetter.hidden = true;
   letterUnlockForm.hidden = false;
   letterUnlockForm.reset();
-  letterUnlockStatus.textContent = '';
+  clearLetterError();
 });
 const birthdayMusic = document.querySelector('#birthdayMusic');
 const musicToggle = document.querySelector('#musicToggle');
 const musicLabel = document.querySelector('#musicLabel');
 let musicManuallyPaused = false;
 let musicStarting = false;
+let musicNeedsInteraction = true;
 
 birthdayMusic.volume = 0.35;
 
 function updateMusicControl() {
   const playing = !birthdayMusic.paused;
   musicToggle.setAttribute('aria-pressed', String(playing));
-  musicToggle.setAttribute('aria-label', playing ? 'Tắt nhạc nền' : 'Bật nhạc nền');
-  musicLabel.textContent = playing ? 'Tắt nhạc' : 'Bật nhạc';
+  musicToggle.setAttribute('aria-label', playing ? 'Tạm dừng nhạc' : 'Phát nhạc');
+  musicLabel.textContent = playing ? 'Tạm dừng nhạc' : 'Phát nhạc';
 }
 
 async function startMusic() {
   if (!journeyStarted) return;
   if (musicStarting || musicManuallyPaused || !birthdayMusic.paused) return;
   musicStarting = true;
+  musicNeedsInteraction = false;
+  musicToggle.setAttribute('aria-busy', 'true');
   try {
     await birthdayMusic.play();
+    // A second click can pause while the play promise is still pending.
+    if (musicManuallyPaused) birthdayMusic.pause();
   } catch (error) {
-    // Autoplay may need a click or keyboard interaction first.
+    musicNeedsInteraction = error.name === 'NotAllowedError' && !musicManuallyPaused;
     if (error.name !== 'NotAllowedError' && error.name !== 'AbortError') {
       musicLabel.textContent = 'Thử lại nhạc';
     }
   } finally {
     musicStarting = false;
+    musicToggle.removeAttribute('aria-busy');
   }
 }
 
@@ -251,16 +316,19 @@ birthdayMusic.addEventListener('error', () => {
   musicLabel.textContent = 'Nhạc chưa tải được';
 });
 musicToggle.addEventListener('click', () => {
-  if (birthdayMusic.paused) {
+  if (musicStarting || !birthdayMusic.paused) {
+    musicManuallyPaused = true;
+    musicNeedsInteraction = false;
+    birthdayMusic.pause();
+    updateMusicControl();
+  } else {
     musicManuallyPaused = false;
     startMusic();
-  } else {
-    musicManuallyPaused = true;
-    birthdayMusic.pause();
   }
 });
 function startMusicOnInteraction(event) {
-  if (event.target instanceof Element && event.target.closest('#musicToggle')) return;
+  if (!musicNeedsInteraction || musicManuallyPaused) return;
+  if (event.target instanceof Element && event.target.closest('#musicPlayer')) return;
   startMusic();
 }
 document.addEventListener('click', startMusicOnInteraction);
@@ -273,36 +341,51 @@ const wishes = [
   'Bạn xứng đáng với những điều tử tế và bất ngờ thật vui.'
 ];
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    }
+if ('IntersectionObserver' in window && !motionPreference.matches) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.14 });
+  revealItems.forEach((item) => observer.observe(item));
+  motionPreference.addEventListener('change', (event) => {
+    if (!event.matches) return;
+    observer.disconnect();
+    revealItems.forEach((item) => item.classList.add('is-visible'));
   });
-}, { threshold: 0.14 });
+} else {
+  revealItems.forEach((item) => item.classList.add('is-visible'));
+}
 
-revealItems.forEach((item) => observer.observe(item));
-
+let toastTimer;
 function showToast(message) {
+  window.clearTimeout(toastTimer);
   toastMessage.textContent = message;
   toastMessage.classList.add('show');
-  window.setTimeout(() => toastMessage.classList.remove('show'), 3400);
+  toastTimer = window.setTimeout(() => toastMessage.classList.remove('show'), 4200);
 }
 
 function launchConfetti() {
-  if (typeof confetti !== 'function') return;
-  confetti({ particleCount: 90, spread: 75, origin: { y: .68 }, colors: ['#f7c948', '#ec6b5d', '#8fc4c2', '#fffaf1'] });
+  if (!animationEnabled() || document.hidden) return;
+  if (typeof confetti !== 'function') {
+    window.birthdayEffects?.celebrate();
+    return;
+  }
+  confetti({ particleCount: 90, spread: 75, origin: { y: .68 }, disableForReducedMotion: true, colors: ['#f7c948', '#ec6b5d', '#8fc4c2', '#fffaf1'] });
 }
 
 openCardButton.addEventListener('click', () => {
-  document.querySelector('#letter').scrollIntoView({ behavior: 'smooth' });
+  scrollToSection(document.querySelector('#letter'));
   window.setTimeout(launchConfetti, 550);
 });
 
 wishButton.addEventListener('click', () => {
   const wish = wishes[Math.floor(Math.random() * wishes.length)];
   showToast(wish);
+  if (!animationEnabled() || typeof wishButton.animate !== 'function') return;
   wishButton.animate([
     { transform: 'rotate(8deg) scale(1)' },
     { transform: 'rotate(-3deg) scale(1.08)' },
@@ -315,3 +398,65 @@ celebrateButton.addEventListener('click', () => {
   window.setTimeout(launchConfetti, 250);
   showToast('Chúc mừng sinh nhật, Vũ Thị Giang! Hôm nay là ngày của bạn ✦');
 });
+
+const photoDialog = document.querySelector('#photoDialog');
+const photoButtons = [...document.querySelectorAll('.photo-open')];
+const lightboxImage = document.querySelector('#lightboxImage');
+const lightboxCaption = document.querySelector('#lightboxCaption');
+const previousPhotoButton = document.querySelector('#prevPhoto');
+const nextPhotoButton = document.querySelector('#nextPhoto');
+const closePhotoButton = document.querySelector('#closePhotoDialog');
+
+if (photoDialog && lightboxImage && lightboxCaption && previousPhotoButton && nextPhotoButton && closePhotoButton && photoButtons.length) {
+  let currentPhotoIndex = 0;
+  let photoOpener = null;
+  let previousOverflow = '';
+
+  function showPhoto(index) {
+    currentPhotoIndex = (index + photoButtons.length) % photoButtons.length;
+    const card = photoButtons[currentPhotoIndex].closest('.photo-card');
+    const photo = card.querySelector('img');
+    const title = card.querySelector('figcaption h3')?.textContent.trim() || photo.alt;
+    const description = card.querySelector('figcaption p')?.textContent.trim() || '';
+    lightboxImage.src = photo.currentSrc || photo.src;
+    lightboxImage.alt = photo.alt;
+    if (photoDialog.open && animationEnabled() && typeof lightboxImage.animate === 'function') {
+      lightboxImage.animate([
+        { opacity: .25, transform: 'scale(.97)' },
+        { opacity: 1, transform: 'scale(1)' }
+      ], { duration: 320, easing: 'ease-out' });
+    }
+    lightboxCaption.textContent = `${currentPhotoIndex + 1} / ${photoButtons.length} · ${title}${description ? ` — ${description}` : ''}`;
+    previousPhotoButton.disabled = photoButtons.length < 2;
+    nextPhotoButton.disabled = photoButtons.length < 2;
+  }
+
+  photoButtons.forEach((button, index) => {
+    button.addEventListener('click', () => {
+      photoOpener = button;
+      showPhoto(index);
+      previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      photoDialog.showModal();
+      closePhotoButton.focus({ preventScroll: true });
+    });
+  });
+  previousPhotoButton.addEventListener('click', () => showPhoto(currentPhotoIndex - 1));
+  nextPhotoButton.addEventListener('click', () => showPhoto(currentPhotoIndex + 1));
+  closePhotoButton.addEventListener('click', () => photoDialog.close());
+  photoDialog.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      showPhoto(currentPhotoIndex + (event.key === 'ArrowRight' ? 1 : -1));
+    }
+  });
+  photoDialog.addEventListener('click', (event) => {
+    if (event.target !== photoDialog) return;
+    const bounds = photoDialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) photoDialog.close();
+  });
+  photoDialog.addEventListener('close', () => {
+    document.body.style.overflow = previousOverflow;
+    photoOpener?.focus({ preventScroll: true });
+  });
+}

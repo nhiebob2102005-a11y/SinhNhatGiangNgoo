@@ -13,7 +13,7 @@ const server = http.createServer(async (req, res) => {
     if (!['GET', 'HEAD'].includes(req.method)) return json(res, 405, { error: 'Method not allowed' });
     const relative = pathname === '/' ? 'index.html' : pathname.slice(1);
     const file = path.resolve(root, relative);
-    if (!['index.html', 'styles.css', 'script.js', 'wishes.js'].includes(relative) && !(relative.startsWith('assets/') && file.startsWith(path.join(root, 'assets') + path.sep))) return json(res, 404, { error: 'Not found' });
+    if (!['index.html', 'styles.css', 'effects.css', 'script.js', 'effects.js', 'wishes.js'].includes(relative) && !(relative.startsWith('assets/') && file.startsWith(path.join(root, 'assets') + path.sep))) return json(res, 404, { error: 'Not found' });
     if (!fs.existsSync(file) || !fs.statSync(file).isFile()) return json(res, 404, { error: 'Not found' });
     res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Content-Length': fs.statSync(file).size, 'X-Content-Type-Options': 'nosniff' });
     if (req.method === 'HEAD') return res.end();

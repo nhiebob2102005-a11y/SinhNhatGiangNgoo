@@ -45,6 +45,10 @@ wishForm.addEventListener('submit', (event) => {
   renderWishes(currentWishes);
   wishForm.reset();
   wishStatus.textContent = 'Điều ước đã xuất hiện trên bảng tin!';
+  const submitBounds = wishForm.querySelector('button[type="submit"]').getBoundingClientRect();
+  document.dispatchEvent(new CustomEvent('birthday:celebrate', {
+    detail: { x: submitBounds.left + submitBounds.width / 2, y: submitBounds.top, count: 45 }
+  }));
 });
 
 pauseWishesBtn.addEventListener('click', () => {

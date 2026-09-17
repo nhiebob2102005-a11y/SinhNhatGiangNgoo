@@ -1,8 +1,26 @@
-# Website sinh nh?t
+# Thiệp sinh nhật — Little note
 
-Website t?nh: m? index.html, d?ng Live Server ho?c ??a l?n GitHub Pages.
-C? th? xem b?ng Node.js: ch?y npm start, m? http://localhost:3000.
+Trang sinh nhật dành cho Vũ Thị Giang, từ Dương Văn Việt. Giao diện sổ lưu niệm tông kem và đỏ, sử dụng HTML, CSS và JavaScript thuần.
 
-?i?u ??c ch? ???c gi? trong b? nh? c?a l?n m? trang hi?n t?i. B?m G?i ?i?u ??c ?? th?m h? t?n v? n?i dung v?o b?ng tin chuy?n ??ng. T?i l?i, ??ng trang ho?c quay l?i trang s? x?a c?c ?i?u ??c; ng??i xem kh?c kh?ng th?y ?i?u ??c n?y.
+## Chạy trang web
 
-Kh?ng g?i API, kh?ng l?u v?o localStorage, sessionStorage hay t?p d? li?u. M?y ch? Node.js t?y ch?n ch? ph?c v? c?c t?p t?nh.
+Chạy `npm start` (trên PowerShell có thể dùng `npm.cmd start`), sau đó mở http://localhost:3000. Có thể mở trực tiếp `index.html` hoặc đưa các tệp tĩnh lên GitHub Pages. Không cần cài thư viện.
+
+## Nội dung và tương tác
+
+- Mở thiệp, thổi/thắp lại nến và bật/tắt nhạc nền.
+- Mở lời chúc bằng tên người nhận và ngày/tháng sinh. Thay thông tin tại `letterRecipient` trong `script.js`. Đây là trò mở thiệp phía trình duyệt, không phải cơ chế bảo vệ dữ liệu riêng tư.
+- Chạm ảnh để phóng to; dùng các nút mũi tên hoặc phím trái/phải để chuyển ảnh, Escape để đóng.
+- Cào vé để nhận quà hoặc dùng nút “Mở quà ngay”, hỗ trợ bàn phím.
+- Gửi điều ước lên bảng tin, có nút tạm dừng chuyển động.
+- Hỗ trợ điện thoại và cài đặt giảm chuyển động của thiết bị.
+- Cánh hoa và trái tim rơi nhiều lớp; sao/tim theo con trỏ, ảnh nghiêng 3D, chữ và họa tiết chuyển động, chuyển cảnh mở phong bì, dải lời chúc chạy liên tục và pháo giấy khi tương tác.
+- Nút hiệu ứng ở góc dưới bên trái cho phép tắt/bật các chuyển động. Khi thiết bị bật giảm chuyển động hoặc tab bị ẩn, hiệu ứng tự giảm/dừng. Hiệu ứng canvas nằm trong `effects.js`, các animation CSS nằm trong `effects.css`.
+
+## Thay nội dung
+
+Nội dung và chú thích ảnh nằm trong `index.html`; ảnh ở `assets/Pictures/`, nhạc ở `assets/Music/`. Màu sắc và phông chữ khai báo ở đầu `styles.css`.
+
+Điều ước chỉ được giữ trong bộ nhớ của lần mở trang hiện tại. Tải lại, đóng trang hoặc quay lại trang sẽ xóa các điều ước; người xem khác không thấy điều ước này. Không gửi API, không lưu vào localStorage, sessionStorage hay tệp dữ liệu. Máy chủ Node.js chỉ phục vụ các tệp tĩnh.
+
+Google Fonts và hiệu ứng pháo giấy được tải từ CDN; các chức năng chính vẫn hoạt động nếu CDN không khả dụng, với phông chữ dự phòng.
