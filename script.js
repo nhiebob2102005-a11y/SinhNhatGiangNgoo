@@ -296,6 +296,9 @@ async function startMusic() {
   musicNeedsInteraction = false;
   musicToggle.setAttribute('aria-busy', 'true');
   try {
+    if (birthdayMusic.error || birthdayMusic.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+      birthdayMusic.load();
+    }
     await birthdayMusic.play();
     // A second click can pause while the play promise is still pending.
     if (musicManuallyPaused) birthdayMusic.pause();

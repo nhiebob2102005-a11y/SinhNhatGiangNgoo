@@ -242,7 +242,7 @@
 
   document.addEventListener('click', (event) => {
     if (!enabled || !(event.target instanceof Element)) return;
-    if (event.target.closest('#effectsToggle, #musicPlayer, input, textarea, select, #scratchCanvas')) return;
+    if (event.target.closest('#effectsToggle, #musicPlayer, #clawMachine, #clawPrizeDialog, input, textarea, select, #scratchCanvas')) return;
     const celebrationButton = event.target.closest('#continueBtn, #candleBtn, #celebrateBtn, #revealGiftBtn');
     const target = event.target.closest('button, a') || event.target;
     const bounds = target.getBoundingClientRect();

@@ -9,6 +9,7 @@ Chạy `npm start` (trên PowerShell có thể dùng `npm.cmd start`), sau đó 
 ## Nội dung và tương tác
 
 - Mở thiệp, thổi/thắp lại nến và bật/tắt nhạc nền.
+- Trình phát nhạc nổi với đĩa vinyl xoay theo trạng thái phát, thanh tua, âm lượng, tắt tiếng, phát lại từ đầu và lặp bài. Có nút thu gọn; mặc định thu gọn trên điện thoại. Giao diện nằm trong `music-player.css`, điều khiển bổ sung trong `music-player.js`.
 - Mở lời chúc bằng tên người nhận và ngày/tháng sinh. Thay thông tin tại `letterRecipient` trong `script.js`. Đây là trò mở thiệp phía trình duyệt, không phải cơ chế bảo vệ dữ liệu riêng tư.
 - Chạm ảnh để phóng to; dùng các nút mũi tên hoặc phím trái/phải để chuyển ảnh, Escape để đóng.
 - Cào vé để nhận quà hoặc dùng nút “Mở quà ngay”, hỗ trợ bàn phím.

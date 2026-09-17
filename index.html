@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="effects.css" />
   <link rel="stylesheet" href="music-player.css" />
+  <link rel="stylesheet" href="claw-machine.css" />
 </head>
 <body>
   <div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
@@ -50,7 +51,7 @@
     <section class="hero-section" aria-labelledby="hero-title">
       <nav class="topbar container" aria-label="Điều hướng chính">
         <a class="brand-mark" href="#top" aria-label="Về đầu trang"><span aria-hidden="true">✳</span> little note<span class="brand-dot">.</span></a>
-        <div class="nav-links"><a href="#letter">Lời nhắn</a><a href="#photos">Kỷ niệm</a><a href="#gift">Món quà</a><a href="#wishes">Điều ước <span aria-hidden="true">↗</span></a></div>
+        <div class="nav-links"><a href="#letter">Lời nhắn</a><a href="#photos">Kỷ niệm</a><a href="#claw-machine">Gắp quà</a><a href="#wishes">Điều ước <span aria-hidden="true">↗</span></a></div>
         <span class="date-stamp">05.10.2026 <span aria-hidden="true">♡</span></span>
       </nav>
       <div class="hero-content container" id="top">
@@ -141,6 +142,90 @@
       </div>
     </section>
 
+    <section class="claw-section" id="claw-machine" aria-labelledby="claw-title">
+      <div class="container claw-layout">
+        <div class="claw-intro section-heading reveal">
+          <p class="eyebrow">BONUS / TRẠM QUÀ BÍ ẨN</p>
+          <h2 id="claw-title">Gắp một chút,<br /><em>ngọt ngào.</em></h2>
+          <p>Một chiếc máy nhỏ, sáu viên quà bí mật. Mỗi viên giấu một món nước Mixue — món nào thì phải gắp được mới biết nhé!</p>
+          <ol class="claw-howto">
+            <li><span>01</span><div><strong>Căn thật khéo</strong><p>Dùng nút trái / phải hoặc thanh trượt để đưa càng đến viên quà.</p></div></li>
+            <li><span>02</span><div><strong>Gắp một bất ngờ</strong><p>Bấm “Gắp ngay” và chờ càng mang quà về. Hụt một chút? Thử lại nhé!</p></div></li>
+            <li><span>03</span><div><strong>Mở ra rồi hẹn nhau</strong><p>Mở viên quà ở cửa nhận, chụp lại món nước và gửi mình nha.</p></div></li>
+          </ol>
+          <p class="claw-note handwritten">a little luck, a little sweetness ♡</p>
+          <div class="claw-collection-wrap" id="clawCollectionWrap" hidden>
+            <h3>Bộ sưu tập ngọt ngào <span aria-hidden="true">✧</span></h3>
+            <ul id="clawCollection" class="claw-collection" aria-label="Những phần thưởng đã mở"></ul>
+            <p class="claw-session-note">Quà đã mở được giữ trong lần ghé trang này.</p>
+          </div>
+        </div>
+        <div class="claw-game-wrap reveal reveal-delay-1">
+          <div class="claw-machine" id="clawMachine" data-state="idle" tabindex="0" role="group" aria-label="Máy gắp quà Mixue" aria-describedby="clawKeyboardHint clawStatus">
+            <div class="claw-marquee">
+              <span class="claw-marquee-star" aria-hidden="true">✳</span>
+              <div><p>LITTLE NOTE ARCADE</p><h3>Sweet surprise</h3></div>
+              <span class="claw-marquee-star" aria-hidden="true">✳</span>
+              <div class="claw-bulbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="claw-window">
+              <div class="claw-window-top"><span class="claw-ready-light" aria-hidden="true"></span><span id="clawReadout">SẴN SÀNG</span><span class="claw-window-count"><strong id="clawRemaining">6</strong> VIÊN QUÀ</span></div>
+              <svg id="clawStage" class="claw-stage" viewBox="0 0 400 310" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="clawGlass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9efe2"/><stop offset="1" stop-color="#d2dfca"/></linearGradient>
+                  <linearGradient id="clawMetal" x1="0" x2="1"><stop offset="0" stop-color="#7b8976"/><stop offset=".45" stop-color="#f5f1d9"/><stop offset="1" stop-color="#8c9782"/></linearGradient>
+                  <pattern id="clawGrid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#aabb9f" stroke-opacity=".18" stroke-width="1"/></pattern>
+                </defs>
+                <rect width="400" height="310" fill="url(#clawGlass)"/>
+                <rect width="400" height="310" fill="url(#clawGrid)"/>
+                <circle cx="325" cy="70" r="75" fill="#f7f5d8" opacity=".4"/>
+                <path d="m34 75 4 10 10 4-10 4-4 10-4-10-10-4 10-4zm320 70 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#96ad86" opacity=".6"/>
+                <text x="200" y="146" text-anchor="middle" class="claw-glass-word">a sweet little mystery</text>
+                <text x="200" y="170" text-anchor="middle" class="claw-glass-heart">♡</text>
+                <rect x="0" y="7" width="400" height="12" rx="6" fill="#b5c1a9"/>
+                <rect x="0" y="8" width="400" height="3" fill="#eff4e5" opacity=".8"/>
+                <path d="M0 281Q100 267 200 281T400 280V310H0Z" fill="#b7c8aa"/>
+                <path d="M0 290Q100 280 200 291T400 291V310H0Z" fill="#a7ba9b" opacity=".7"/>
+                <line id="clawGuide" x1="200" x2="200" y1="40" y2="276" stroke="#8ea678" stroke-width="1" stroke-dasharray="3 6" opacity=".5"/>
+                <ellipse id="clawTarget" cx="200" cy="281" rx="24" ry="5" fill="#829b65" opacity=".25"/>
+                <g id="clawCapsules"></g>
+                <g id="clawCarriage" transform="translate(200 14)">
+                  <rect x="-19" y="-8" width="38" height="15" rx="5" fill="#a8464c" stroke="#913941" stroke-width="1.5"/>
+                  <circle cx="-11" cy="0" r="3" fill="#f4dca7"/><circle cx="11" cy="0" r="3" fill="#f4dca7"/>
+                  <line id="clawCable" x1="0" x2="0" y1="0" y2="38" stroke="#7b8b77" stroke-width="3"/>
+                  <g id="clawHead" transform="translate(0 38)">
+                    <g id="clawHeldCapsule" transform="translate(0 38)"></g>
+                    <path id="clawFingerLeft" d="M-8 4Q-30 19-24 36L-16 42" fill="none" stroke="url(#clawMetal)" stroke-width="7" stroke-linecap="round"/>
+                    <path id="clawFingerRight" d="M8 4Q30 19 24 36L16 42" fill="none" stroke="url(#clawMetal)" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M0 5V32" fill="none" stroke="#94a188" stroke-width="5" stroke-linecap="round"/>
+                    <rect x="-13" y="-4" width="26" height="17" rx="6" fill="url(#clawMetal)" stroke="#839178"/>
+                    <circle cx="0" cy="3" r="4" fill="#b46161"/>
+                  </g>
+                </g>
+                <path d="M10 40v160M17 40v65" stroke="#fffdf0" stroke-width="3" stroke-linecap="round" opacity=".3"/>
+              </svg>
+              <div class="claw-glass-shine" aria-hidden="true"></div>
+            </div>
+            <div class="claw-console">
+              <label for="clawAim" class="claw-aim-label">CĂN VỊ TRÍ CÀNG <span aria-hidden="true">↔</span></label>
+              <input id="clawAim" class="claw-aim" type="range" min="40" max="360" step="1" value="200" aria-label="Vị trí càng gắp" aria-describedby="clawKeyboardHint" />
+              <div class="claw-controls">
+                <div class="claw-directions"><button id="clawLeft" class="claw-direction" type="button" aria-label="Di chuyển càng sang trái">←</button><button id="clawRight" class="claw-direction" type="button" aria-label="Di chuyển càng sang phải">→</button></div>
+                <button id="clawGrab" class="claw-grab" type="button">Gắp ngay <span aria-hidden="true">✦</span></button>
+              </div>
+              <p id="clawStatus" class="claw-status" role="status" aria-live="polite">Căn càng vào giữa một viên quà rồi bấm gắp nhé.</p>
+            </div>
+            <div class="claw-bottom">
+              <div class="claw-score"><span>ĐÃ KHÁM PHÁ</span><p><strong id="clawCollected">0</strong><span> / 06</span></p><button id="clawReset" type="button" disabled>Nạp lại quà ↻</button></div>
+              <button id="clawOpenPrize" class="claw-prize-door" type="button" disabled aria-haspopup="dialog" aria-controls="clawPrizeDialog"><span class="claw-door-capsule" aria-hidden="true">?</span><span id="clawOutputLabel">QUÀ ĐANG CHỜ BẠN</span><span class="claw-door-arrow" aria-hidden="true">↓</span></button>
+            </div>
+            <span class="claw-foot claw-foot-left" aria-hidden="true"></span><span class="claw-foot claw-foot-right" aria-hidden="true"></span>
+          </div>
+          <p id="clawKeyboardHint" class="claw-keyboard-hint">Dùng nút điều khiển hoặc <kbd>←</kbd> <kbd>→</kbd> và <kbd>Space</kbd> khi chọn máy gắp.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="gift-section" id="gift" aria-labelledby="gift-title">
       <div class="container gift-layout">
         <div class="section-heading reveal"><p class="eyebrow">03 / MỘT CHÚT BẤT NGỜ</p><h2 id="gift-title">Một món quà.<br /><em>Một nụ cười.</em></h2><p>Có một bất ngờ nhỏ đang đợi Giang bên trong. Cào lớp nhũ và khám phá món quà của mình nhé.</p><span class="gift-doodle handwritten" aria-hidden="true">this one's just for you ↗</span></div>
@@ -190,12 +275,24 @@
     </section>
   </main>
   <noscript><p class="noscript-note">Bạn hãy bật JavaScript để mở thiệp và khám phá món quà nhé.</p></noscript>
+  <dialog id="clawPrizeDialog" class="claw-prize-dialog" aria-labelledby="clawPrizeTitle" aria-describedby="clawPrizeDescription">
+    <button id="clawPrizeClose" class="claw-dialog-close" type="button" aria-label="Đóng phần thưởng">×</button>
+    <div class="claw-ticket-top"><span>LITTLE NOTE · MYSTERY DRINK</span><span id="clawPrizeNumber">01 / 06</span></div>
+    <p class="claw-prize-eyebrow">BẤT NGỜ CỦA BẠN ĐÂY RỒI!</p>
+    <div class="claw-prize-icon" id="clawPrizeIcon" aria-hidden="true">🧋</div>
+    <span class="claw-prize-brand">MIXUE DATE ♡</span>
+    <h2 id="clawPrizeTitle" tabindex="-1"></h2>
+    <p id="clawPrizeDescription"></p>
+    <div class="claw-ticket-perforation" aria-hidden="true"></div>
+    <p class="claw-ticket-signoff handwritten">Một chút ngọt ngào, dành riêng cho Giang.</p>
+    <button id="clawPlayAgain" class="btn btn-sunshine" type="button">Gắp thêm một viên <span aria-hidden="true">↗</span></button>
+  </dialog>
   <dialog id="photoDialog" class="photo-dialog" aria-label="Ảnh kỷ niệm" aria-describedby="lightboxCaption">
     <button id="closePhotoDialog" class="dialog-close" type="button" aria-label="Đóng ảnh">×</button>
     <div class="lightbox-stage"><button id="prevPhoto" class="photo-nav" type="button" aria-label="Ảnh trước">←</button><img id="lightboxImage" alt="" /><button id="nextPhoto" class="photo-nav" type="button" aria-label="Ảnh tiếp theo">→</button></div>
     <p id="lightboxCaption" aria-live="polite"></p>
   </dialog>
-  <audio id="birthdayMusic" loop preload="none"><source src="assets/Music/Radiohead - No Surprises - Instrumental - SHADOWINLIGHT (youtube).mp3" type="audio/mpeg" /></audio>
+  <audio id="birthdayMusic" loop preload="none" src="assets/Music/Radiohead - No Surprises - Instrumental - SHADOWINLIGHT (youtube).mp3"></audio>
   <section class="music-player" id="musicPlayer" aria-label="Trình phát nhạc" hidden>
     <div class="player-topline">
       <span class="player-kicker"><span aria-hidden="true"></span> MỘT CHÚT NHẠC CHO BẠN</span>
@@ -243,5 +340,6 @@
   <script src="music-player.js"></script>
   <script src="wishes.js"></script>
   <script src="effects.js"></script>
+  <script src="claw-machine.js"></script>
 </body>
 </html>
