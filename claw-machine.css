@@ -128,13 +128,22 @@
   .claw-direction { width: 50px; }.claw-controls { gap: 20px; }
   .claw-console { padding-inline: 16px; }
 }
+@media (max-width: 600px) {
+  .claw-section { padding-block: 56px; }
+  .claw-layout { gap: 32px; }
+  .claw-intro h2 { font-size: clamp(32px, 9vw, 38px); }
+  .claw-howto { margin-block: 24px; }
+  .claw-howto p { font-size: 12px; }
+  .claw-score button { min-height: 44px; }
+  .claw-machine .claw-aim { height: 44px; min-height: 44px; }
+  .claw-status { font-size: 10px; }
+}
 @media (max-width: 420px) {
-  .claw-section .container { width: calc(100% - 32px); }
-  .claw-intro h2 { font-size: 44px; }.claw-howto { gap: 20px; }
+  .claw-howto { gap: 20px; }
   .claw-machine { padding: 12px; border-radius: 28px 28px 18px 18px; }
   .claw-marquee { min-height: 94px; padding-inline: 8px; }.claw-marquee h3 { font-size: 29px; }.claw-marquee-star { font-size: 22px; }
   .claw-window { border-width: 3px; }.claw-window-top { padding-inline: 8px; font-size: 6px; }
-  .claw-console { padding: 13px 10px 9px; }.claw-controls { gap: 12px; }.claw-directions { gap: 7px; }.claw-direction { width: 41px; }
+  .claw-console { padding: 13px 10px 9px; }.claw-controls { gap: 10px; }.claw-directions { gap: 7px; }.claw-direction { width: 44px; }
   .claw-grab { font-size: 10px; padding-inline: 8px; }.claw-status { min-height: 44px; }
   .claw-bottom { padding-top: 14px; gap: 9px; }.claw-score { padding-left: 4px; }
   .claw-prize-door { padding-inline: 6px; font-size: 6px; }.claw-door-arrow { right: 8px; }

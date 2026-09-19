@@ -13,9 +13,10 @@
   const mute = document.querySelector('#musicMute');
   const expand = document.querySelector('#musicExpand');
   const details = document.querySelector('#musicDetails');
+  const timeline = document.querySelector('#musicTimeline');
   const repeat = document.querySelector('#musicRepeat');
   const restart = document.querySelector('#musicRestart');
-  if (![status, seek, currentTime, duration, volume, mute, expand, details, repeat, restart].every(Boolean)) return;
+  if (![status, seek, currentTime, duration, volume, mute, expand, details, timeline, repeat, restart].every(Boolean)) return;
 
   let previewingSeek = false;
   let lastAudibleVolume = audio.volume > 0 ? audio.volume : 0.35;
@@ -147,16 +148,32 @@
   });
 
   function setExpanded(expanded) {
+    const restoreFocus = !expanded && player.contains(document.activeElement) && document.activeElement !== expand;
     details.hidden = !expanded;
+    timeline.hidden = !expanded;
     player.classList.toggle('is-collapsed', !expanded);
     expand.setAttribute('aria-expanded', String(expanded));
     const label = expanded ? 'Thu gọn trình phát nhạc' : 'Mở rộng trình phát nhạc';
     expand.setAttribute('aria-label', label);
     expand.title = label;
+    if (restoreFocus) expand.focus({ preventScroll: true });
   }
-  // Choose a compact mobile default once; respect the visitor's later choice.
-  setExpanded(!window.matchMedia('(max-width: 600px)').matches);
+  const compactScreen = window.matchMedia('(max-width: 800px), (max-height: 500px) and (pointer: coarse)');
+  // Start as a tiny record on phones, including when rotating into landscape.
+  setExpanded(!compactScreen.matches);
   expand.addEventListener('click', () => setExpanded(details.hidden));
+  compactScreen.addEventListener('change', (event) => {
+    if (event.matches) setExpanded(false);
+  });
+  document.addEventListener('pointerdown', (event) => {
+    if (compactScreen.matches && !details.hidden && !player.contains(event.target)) setExpanded(false);
+  });
+  player.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !details.hidden) {
+      setExpanded(false);
+      expand.focus({ preventScroll: true });
+    }
+  });
 
   function syncRepeat() {
     repeat.setAttribute('aria-pressed', String(audio.loop));

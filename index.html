@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#f8f5ed" />
   <meta name="description" content="Một chiếc thiệp sinh nhật nhỏ dành riêng cho Vũ Thị Giang, với những lời chúc, kỷ niệm và bất ngờ từ Dương Văn Việt." />
   <title>Gửi Giang — Một ngày thật đặc biệt</title>
@@ -27,7 +27,35 @@
         <p class="eyebrow"><span class="little-line"></span> MỘT LỜI NHẮN DÀNH RIÊNG CHO BẠN</p>
         <h1 id="welcomeTitle">Có một ngày<br /><em>thật đặc biệt.</em><span class="title-spark" aria-hidden="true">✧</span></h1>
         <p class="welcome-description"><strong>Dương Văn Việt</strong> có một món quà nhỏ dành cho bạn. Một vài lời chúc, một chút kỷ niệm và thật nhiều chân thành.</p>
-        <button class="btn btn-sunshine" id="continueBtn" type="button">Mở món quà nhỏ <span aria-hidden="true">↗</span></button>
+        <section class="welcome-countdown" aria-labelledby="countdownTitle">
+          <p class="countdown-title" id="countdownTitle">Cùng đếm ngược đến ngày đặc biệt</p>
+          <div class="countdown-units" role="timer" aria-label="Thời gian còn lại đến sinh nhật" aria-live="off">
+            <div class="countdown-unit"><strong id="countdownDays">00</strong><span>Ngày</span></div>
+            <div class="countdown-unit"><strong id="countdownHours">00</strong><span>Giờ</span></div>
+            <div class="countdown-unit"><strong id="countdownMinutes">00</strong><span>Phút</span></div>
+            <div class="countdown-unit"><strong id="countdownSeconds">00</strong><span>Giây</span></div>
+          </div>
+          <p class="countdown-date" id="countdownDate">00:00 · <time id="birthdayCountdownTarget" datetime="2026-10-05T00:00:00+07:00">05.10.2026</time> · giờ Việt Nam</p>
+          <p class="countdown-message" id="countdownMessage" role="status" hidden>Ngày đặc biệt đã đến rồi ♡</p>
+        </section>
+        <div class="welcome-gate">
+          <form class="welcome-unlock-form" id="welcomeUnlockForm" novalidate>
+            <label for="welcomePasscode">Mật mã của món quà</label>
+            <input id="welcomePasscode" name="welcomePasscode" type="password" inputmode="numeric" autocomplete="off" enterkeyhint="go" pattern="[0-9]{8}" minlength="8" maxlength="8" required aria-describedby="welcomeCodeHint welcomeCodeError" placeholder="Nhập 8 chữ số" />
+            <p class="welcome-code-hint" id="welcomeCodeHint">Một ngày đặc biệt, gồm 8 chữ số.</p>
+            <p class="welcome-code-error" id="welcomeCodeError" role="alert"></p>
+            <button class="btn btn-sunshine" id="welcomeUnlockButton" type="submit">Mở món quà nhỏ <span aria-hidden="true">↗</span></button>
+          </form>
+          <div class="welcome-unlocked" id="welcomeUnlocked" hidden>
+            <span class="welcome-unlocked-icon" aria-hidden="true">✓</span>
+            <h2 id="welcomeSuccessTitle" tabindex="-1">Bạn đã nhập đúng mật mã!</h2>
+            <p>Món quà nhỏ đã sẵn sàng. Cùng mở nhé?</p>
+            <div class="welcome-gate-actions">
+              <button class="btn btn-sunshine" id="continueBtn" type="button">Tiếp tục <span aria-hidden="true">↗</span></button>
+              <button class="btn welcome-back" id="welcomeBackBtn" type="button">Quay lại</button>
+            </div>
+          </div>
+        </div>
         <p class="welcome-footnote"><span aria-hidden="true">♫</span> Sẽ vui hơn một chút khi bạn bật âm thanh.</p>
       </div>
       <div class="envelope-scene" aria-hidden="true">
@@ -293,16 +321,16 @@
     <p id="lightboxCaption" aria-live="polite"></p>
   </dialog>
   <audio id="birthdayMusic" loop preload="none" src="assets/Music/Radiohead - No Surprises - Instrumental - SHADOWINLIGHT (youtube).mp3"></audio>
-  <section class="music-player" id="musicPlayer" aria-label="Trình phát nhạc" hidden>
+  <section class="music-player is-collapsed" id="musicPlayer" aria-label="Trình phát nhạc" hidden>
     <div class="player-topline">
       <span class="player-kicker"><span aria-hidden="true"></span> MỘT CHÚT NHẠC CHO BẠN</span>
-      <button class="player-icon-button player-expand" id="musicExpand" type="button" aria-label="Thu gọn trình phát nhạc" aria-expanded="true" aria-controls="musicDetails">
+      <button class="player-icon-button player-expand" id="musicExpand" type="button" aria-label="Mở rộng trình phát nhạc" aria-expanded="false" aria-controls="musicTrackInfo musicToggle musicTimeline musicDetails">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5" /></svg>
       </button>
     </div>
     <div class="player-track">
       <div class="vinyl-sleeve" aria-hidden="true"><div class="vinyl-disc"><div class="vinyl-label"><img src="assets/Pictures/1.jpg" alt="" width="48" height="48" /><span class="vinyl-spindle"></span></div></div><span class="vinyl-glint"></span></div>
-      <div class="player-track-info">
+      <div class="player-track-info" id="musicTrackInfo">
         <h2 id="musicTitle">No Surprises</h2>
         <p id="musicArtist">Radiohead</p>
         <p class="player-version">Instrumental · SHADOWINLIGHT</p>
@@ -314,11 +342,11 @@
         <span class="player-sr-only" id="musicLabel">Phát nhạc</span>
       </button>
     </div>
-    <div class="player-timeline">
+    <div class="player-timeline" id="musicTimeline" hidden>
       <input id="musicSeek" class="player-range player-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Vị trí phát nhạc" disabled />
       <div class="player-time"><span id="musicCurrentTime">0:00</span><span id="musicDuration">--:--</span></div>
     </div>
-    <div class="player-details" id="musicDetails">
+    <div class="player-details" id="musicDetails" hidden>
       <div class="player-actions">
         <button class="player-icon-button" id="musicRestart" type="button" aria-label="Phát lại từ đầu" title="Về đầu bài hát"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M19 5 8 12l11 7z" /></svg></button>
         <button class="player-icon-button" id="musicRepeat" type="button" aria-label="Lặp lại bài hát" aria-pressed="true" title="Lặp lại bài hát"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4m14-1v2a3 3 0 0 1-3 3H3" /></svg></button>

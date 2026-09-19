@@ -134,7 +134,7 @@ input:focus,textarea:focus { border-color:#be8371; background:#fffdf8; box-shado
 @keyframes seal-open { to { scale:1.45; opacity:0; } }
 
 @media (max-width:600px) {
-  .effects-toggle { left:13px; bottom:max(13px,env(safe-area-inset-bottom)); font-size:9px; padding:7px 12px; }
+  .effects-toggle { left:calc(12px + env(safe-area-inset-left,0px)); bottom:calc(12px + env(safe-area-inset-bottom,0px)); font-size:9px; padding:7px 12px; }
   .effects-toggle-icon { font-size:20px; }
   .paper-petal:nth-child(n+15) { display:block; }
   .ribbon-group { gap:25px; padding-right:25px; }

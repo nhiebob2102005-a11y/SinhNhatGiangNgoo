@@ -9,6 +9,7 @@ Chạy `npm start` (trên PowerShell có thể dùng `npm.cmd start`), sau đó 
 ## Nội dung và tương tác
 
 - Mở thiệp, thổi/thắp lại nến và bật/tắt nhạc nền.
+- Trang mở đầu có bộ đếm ngược đến 00:00 ngày 05/10/2026 theo giờ Việt Nam và ô nhập mật mã `05102005`. Nhập đúng sẽ hiện thông báo cùng hai lựa chọn “Tiếp tục” và “Quay lại”; chỉ “Tiếp tục” mới mở trang chính và phát nhạc. Bộ đếm hiển thị thời gian đến sinh nhật, không khóa việc nhập mã trước ngày đó. Đổi mốc tại `birthdayCountdownTarget` trong `index.html`, đổi mật mã tại `welcomePasscode` trong `script.js`. Đây là tương tác mở quà phía trình duyệt, tương tự ô mở lời chúc bên dưới.
 - Trình phát nhạc nổi với đĩa vinyl xoay theo trạng thái phát, thanh tua, âm lượng, tắt tiếng, phát lại từ đầu và lặp bài. Có nút thu gọn; mặc định thu gọn trên điện thoại. Giao diện nằm trong `music-player.css`, điều khiển bổ sung trong `music-player.js`.
 - Mở lời chúc bằng tên người nhận và ngày/tháng sinh. Thay thông tin tại `letterRecipient` trong `script.js`. Đây là trò mở thiệp phía trình duyệt, không phải cơ chế bảo vệ dữ liệu riêng tư.
 - Chạm ảnh để phóng to; dùng các nút mũi tên hoặc phím trái/phải để chuyển ảnh, Escape để đóng.

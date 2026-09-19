@@ -7,12 +7,83 @@ function scrollToSection(target, options = {}) {
   target.scrollIntoView({ behavior: animationEnabled() ? 'smooth' : 'instant', ...options });
 }
 let journeyStarted = false;
-document.querySelector('#continueBtn').addEventListener('click', () => {
+const welcomePasscode = '05102005';
+const welcomeUnlockForm = document.querySelector('#welcomeUnlockForm');
+const welcomePasscodeInput = document.querySelector('#welcomePasscode');
+const welcomeCodeError = document.querySelector('#welcomeCodeError');
+const welcomeUnlocked = document.querySelector('#welcomeUnlocked');
+const welcomeBackButton = document.querySelector('#welcomeBackBtn');
+let welcomeCodeAccepted = false;
+
+welcomeUnlockForm.addEventListener('submit', (event) => {
+  event.preventDefault();
   if (journeyStarted) return;
+  const code = welcomePasscodeInput.value;
+  if (code !== welcomePasscode) {
+    welcomeCodeAccepted = false;
+    welcomeCodeError.textContent = !code
+      ? 'Bạn nhập mật mã trước nhé.'
+      : !/^[0-9]{8}$/.test(code)
+        ? 'Mật mã cần đủ 8 chữ số nhé.'
+        : 'Mật mã chưa đúng. Bạn thử lại nhé!';
+    welcomePasscodeInput.setAttribute('aria-invalid', 'true');
+    welcomePasscodeInput.focus();
+    welcomePasscodeInput.select();
+    return;
+  }
+  welcomeCodeAccepted = true;
+  welcomeCodeError.textContent = '';
+  welcomePasscodeInput.removeAttribute('aria-invalid');
+  welcomeUnlockForm.reset();
+  welcomePasscodeInput.blur();
+  welcomeUnlockForm.hidden = true;
+  welcomeUnlocked.hidden = false;
+  document.querySelector('#welcomeSuccessTitle').focus({ preventScroll: true });
+});
+welcomePasscodeInput.addEventListener('input', () => {
+  welcomeCodeError.textContent = '';
+  welcomePasscodeInput.removeAttribute('aria-invalid');
+});
+welcomeBackButton.addEventListener('click', () => {
+  if (journeyStarted) return;
+  welcomeCodeAccepted = false;
+  welcomeUnlocked.hidden = true;
+  welcomeUnlockForm.hidden = false;
+  welcomeUnlockForm.reset();
+  welcomeCodeError.textContent = '';
+  welcomePasscodeInput.removeAttribute('aria-invalid');
+  welcomePasscodeInput.focus({ preventScroll: true });
+});
+
+const birthdayCountdownTarget = Date.parse(document.querySelector('#birthdayCountdownTarget').dateTime);
+const countdownFields = ['Days', 'Hours', 'Minutes', 'Seconds'].map(unit => document.querySelector(`#countdown${unit}`));
+let countdownTimer;
+function updateBirthdayCountdown() {
+  if (journeyStarted) return;
+  // Derive from the clock so background tabs and screen locks cannot cause drift.
+  const totalSeconds = Math.max(0, Math.ceil((birthdayCountdownTarget - Date.now()) / 1000));
+  const values = [Math.floor(totalSeconds / 86400), Math.floor(totalSeconds / 3600) % 24, Math.floor(totalSeconds / 60) % 60, totalSeconds % 60];
+  countdownFields.forEach((field, index) => {
+    const value = String(values[index]).padStart(2, '0');
+    if (field.textContent !== value) field.textContent = value;
+  });
+  document.querySelector('#countdownMessage').hidden = totalSeconds > 0;
+  if (totalSeconds === 0) window.clearInterval(countdownTimer);
+}
+countdownTimer = window.setInterval(updateBirthdayCountdown, 1000);
+updateBirthdayCountdown();
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) updateBirthdayCountdown();
+});
+
+document.querySelector('#continueBtn').addEventListener('click', () => {
+  if (journeyStarted || !welcomeCodeAccepted) return;
   journeyStarted = true;
+  window.clearInterval(countdownTimer);
   const welcomeScreen = document.querySelector('#welcomeScreen');
   const continueButton = document.querySelector('#continueBtn');
   continueButton.disabled = true;
+  welcomeBackButton.disabled = true;
   continueButton.setAttribute('aria-busy', 'true');
   startMusic();
   function openBirthdayPage() {
